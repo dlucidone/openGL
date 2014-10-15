@@ -1,0 +1,88 @@
+//...............................Rubber Rectangle.......................................
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <GL/glut.h>
+#include <GL/freeglut.h> 
+int screenWidth = 640; int screenHeight = 480;
+struct GLintPoint  {
+	GLint x,y;
+	};
+//global variables
+GLintPoint corner[2];
+bool selected = false;
+
+void myDisplay() {
+glClear(GL_COLOR_BUFFER_BIT);
+glMatrixMode(GL_MODELVIEW);
+glLoadIdentity();
+glColor3f(1.0f,1.0f,1.0f);
+if( selected ) {
+glBegin( GL_QUADS );
+	glColor3f(1.0,1.0,1.0);	
+	glVertex2i( corner[1].x,corner[1].y);//draw a rectangle
+	glVertex2i( corner[1].x,corner[2].y);
+	glVertex2i( corner[2].x,corner[2].y);
+	glVertex2i( corner[2].x,corner[1].y);
+	//glRecti(corner[0].x,corner[0].y,corner[1].x,corner[1].y);
+	//glBegin(GL_LINE_LOOP);
+	//glVertex2i( corner[0].x,corner[0].y);//draw a rectangle
+	//glVertex2i( corner[0].x,corner[1].y);
+	//glVertex2i( corner[1].x,corner[1].y);
+	//glVertex2i( corner[1].x,corner[0].y);	
+	glFlush();
+ glEnd();
+
+}
+	glColor3f(1.0,0.0,1.0);
+	glBegin(GL_LINE_LOOP);
+	glVertex2i( corner[0].x,corner[0].y);//draw a rectangle
+	glVertex2i( corner[0].x,corner[1].y);
+	glVertex2i( corner[1].x,corner[1].y);
+	glVertex2i( corner[1].x,corner[0].y);	
+	glFlush();
+ glEnd();
+glutSwapBuffers();
+}
+
+void myMouse(int button,int state,int x,int y) {
+	if(button == GLUT_LEFT_BUTTON && state == GLUT_DOWN) {
+	corner[0].x=x;
+	corner[0].y = screenHeight-y;
+	selected = true;
+}
+glutPostRedisplay();
+}
+void myPassiveMotion(int x,int y)
+{
+	corner[0].x=x;
+	corner[0].y=screenHeight-y;
+
+	glutPostRedisplay();
+}
+int main(int argc, char **argv) {
+	glutInit(&argc,argv);
+	glutInitWindowSize(screenWidth,screenHeight);
+	glutInitWindowPosition(0,0);
+	glutInitDisplayMode(GLUT_RGB|GLUT_DOUBLE);
+	glutCreateWindow("Rubber Rect Demo");
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+	gluOrtho2D(0,screenWidth,0,screenHeight);
+	glMatrixMode(GL_MODELVIEW);
+	glClearColor(0.0f,0.0f,0.0f,0.0f);
+	glViewport(0,0,screenWidth,screenHeight);
+	glutMouseFunc(myMouse);
+	glutDisplayFunc(myDisplay);
+	glutPassiveMotionFunc( myPassiveMotion);
+	glutMainLoop();
+	return(0);
+}
+
+
+
+
+
+
+
+
