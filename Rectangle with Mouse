@@ -1,0 +1,95 @@
+//.............................Rectangle with Mouse......................................
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <GL/glut.h>
+#include <GL/freeglut.h>         /* glut.h includes gl.h and glu.h*/
+const int screenWidth = 640;
+const int screenHeight = 480;
+struct GLintPoint {
+	GLint x,y;
+};
+
+void myDisplay(void)
+{
+	glClear(GL_COLOR_BUFFER_BIT);
+	
+	glFlush();
+}
+/*void drawDot(GLint x, GLint y)
+{
+	glBegin(GL_POINTS);
+	glVertex2i(x,y);
+	glRecti(x,y,150,200);
+	glEnd();
+}
+*/
+void myMouse(int button,int state,int x,int y)
+    
+{	
+	static GLint corner[2];// create an array
+	static GLint numCorners = 0;
+
+      if(state == GLUT_DOWN)
+
+{	
+	if(button == GLUT_LEFT_BUTTON)
+
+{
+	corner[numCorners] = x;
+	corner[numCorners] = screenHeight - y; //flip y cooordinate
+	if(++numCorners == 2)
+{
+	glRecti(corner[0],corner[0],corner[1],corner[1]);
+	numCorners = 0;	
+	//glColor3f(0.6,0.6,0.6);	
+        //drawDot(x,screenHeight-y);	
+	//glBegin(GL_POINTS);
+	//glVertex2f(100.0,50.0);
+	//glVertex2f(100.0,130.0);
+	//glEnd();	
+	glFlush();
+}
+
+else if (button == GLUT_RIGHT_BUTTON)
+{
+	glClearColor(1.0f,1.0f,0.0f,0.0f);
+	glClear(GL_COLOR_BUFFER_BIT);
+	glFlush();
+}
+}
+	/*return;
+      glRecti(x,y,115,115);
+	glFlush(); */
+
+}
+glutSwapBuffers();
+}
+
+void init()
+{
+
+
+	glClearColor(1.0,1.0,1.0,1.0);
+	glColor3f(1.0,0.0,0.0);
+	//glPointSize(6.0);
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
+	gluOrtho2D(0.0,640.0,0.0,480.0);  
+}
+
+int main(int argc, char** argv)
+{
+
+	glutInit(&argc,argv); 
+	glutInitDisplayMode (GLUT_DOUBLE | GLUT_RGB);  
+	glutInitWindowSize(500,500);
+	glutInitWindowPosition(0,0); 
+	glutCreateWindow("simple"); 
+	glutDisplayFunc(myDisplay);
+	init();
+	glutMouseFunc(myMouse);
+	glutPostRedisplay();
+	glutMainLoop();
+
+}
