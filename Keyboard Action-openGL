@@ -1,0 +1,84 @@
+//.........................Keyboard Action-openGL.........................
+
+#include<GL/freeglut.h>
+#include<stdlib.h>
+#include<stdio.h>
+
+#define PI 3.1415926535898
+int angle;
+int i;
+//<<<<<<<<<<<<myInit>>>>>>>>>>>>>>>>>
+ 
+void myInit(void)
+{
+	glClearColor(1.0,1.0,1.0,1.0);
+	glColor3f(1.0,0.0,0.0);
+	glPointSize(4.0);
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+	gluOrtho2D(0.0,640.0,0.0,480.0);
+}
+
+//<<<<<<<<<<<<myDisplay>>>>>>>>>>>>>>
+
+void myDisplay(void)
+{
+	glClear(GL_COLOR_BUFFER_BIT);
+	
+       GLint circle_points = 100;
+       glBegin(GL_LINE_LOOP);
+       for (i = 0; i < circle_points; i++) {
+       angle = 2*PI*i/circle_points;
+       glVertex2f(cos(angle), sin(angle));
+}
+glEnd();
+
+	glFlush();
+}
+
+//<<<<<<<<<<<<<<<<<<<keyboard>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+void myKeyboard(unsigned char theKey, int mouseX, int mouseY)
+{
+switch(theKey)
+{
+case 'r':
+glColor3f(1.0, 0.0, 0.0);
+glRecti(100, 100, 100+200, 100+200);
+glFlush ( );
+break;
+case 'g':
+glColor3f (0.0, 1.0, 0.0);
+glRecti(100, 100, 100+200, 100+200);
+glFlush ( );
+break;
+case 'b':
+glColor3f (0.0, 0.0, 1.0);
+glRecti(100, 100, 100+200, 100+200);
+glFlush ( );
+break;
+case 'k':
+glColor3f (0.0, 0.0, 0.0);
+glRecti(100, 100, 100+200, 100+200);
+glFlush ( );
+break;
+}
+}
+
+//<<<<<<<<<<<<<<main>>>>>>>>>>>>>>>>>>
+
+void main(int argc,char **argv)
+{
+	glutInit(&argc,argv);
+	glutInitDisplayMode(GLUT_SINGLE|GLUT_RGB);
+	glutInitWindowSize(640,480);
+	glutInitWindowPosition(100,150);
+	glutCreateWindow("experiment 1");
+	glutDisplayFunc(myDisplay);
+	myInit();
+        glutKeyboardFunc(myKeyboard); 
+
+	glutMainLoop();
+}
+
+	
